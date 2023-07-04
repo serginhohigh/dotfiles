@@ -16,6 +16,8 @@ vim.keymap.set('n', 'sv', ':vsplit<Return><C-w>w')
 vim.keymap.set("i", "<C-b>", "<ESC>^i")
 vim.keymap.set("i", "<C-e>", "<end>")
 
+vim.keymap.set("i", "<C-c>", "<Esc>")
+
 vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('n', '<C-s>', '<cmd> w <CR>')
 

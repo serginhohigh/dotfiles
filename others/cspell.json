@@ -1,0 +1,41 @@
+{
+  "version": "0.2",
+  "dictionaries": [
+    "ru-ru",
+    "shellscript"
+  ],
+  "words": [
+    "fastapi",
+    "yookassa",
+    "aiohttp",
+    "uvicorn",
+    "pyenv",
+    "mypy",
+    "nvim",
+    "statusline",
+    "treesitter",
+    "autopairs",
+    "keymap",
+    "neovim",
+    "lspconfig",
+    "builtins",
+    "checkhealth",
+    "bufnr",
+    "dotfiles",
+    "typeof",
+    "mapleader",
+    "lazypath",
+    "undercurl",
+    "keymaps",
+    "direnv",
+    "bindkey",
+    "autoload",
+    "startuml",
+    "enduml",
+    "autonumber",
+    "skinparam",
+    "backoff",
+    "isort",
+    "docstrings"
+  ]
+}

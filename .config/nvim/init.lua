@@ -21,15 +21,12 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   {
-    'loctvl842/monokai-pro.nvim',
+    'rmehri01/onenord.nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd('colorscheme monokai-pro')
+      vim.cmd('colorscheme onenord')
     end,
-    opts = {
-      filter = 'machine',
-    },
     enabled = false,
   },
   {
@@ -41,49 +38,6 @@ require('lazy').setup({
     end,
     -- enabled = false,
   },
-  {
-    'svrana/neosolarized.nvim',
-    priority = 1000,
-    dependencies = {
-      'tjdevries/colorbuddy.nvim',
-    },
-    config = function()
-      local n = require('neosolarized')
-      local cb = require('colorbuddy.init')
-
-      n.setup({
-        comment_italics = true,
-        background_set = true,
-      })
-
-      local Color = cb.Color
-      local colors = cb.colors
-      local Group = cb.Group
-      local groups = cb.groups
-      local styles = cb.styles
-      local cError = groups.Error.fg
-      local cInfo = groups.Information.fg
-      local cWarn = groups.Warning.fg
-      local cHint = groups.Hint.fg
-
-      Color.new('white', '#ffffff')
-      Color.new('black', '#000000')
-
-      Group.new('CursorLineNr', colors.yellow, colors.black, styles.NONE, colors.base1)
-
-      Group.new('DiagnosticVirtualTextError', cError, cError:dark():dark():dark():dark(), styles.NONE)
-      Group.new('DiagnosticVirtualTextInfo', cInfo, cInfo:dark():dark():dark(), styles.NONE)
-      Group.new('DiagnosticVirtualTextWarn', cWarn, cWarn:dark():dark():dark(), styles.NONE)
-      Group.new('DiagnosticVirtualTextHint', cHint, cHint:dark():dark():dark(), styles.NONE)
-      Group.new('DiagnosticUnderlineError', colors.none, colors.none, styles.undercurl, cError)
-      Group.new('DiagnosticUnderlineWarn', colors.none, colors.none, styles.undercurl, cWarn)
-      Group.new('DiagnosticUnderlineInfo', colors.none, colors.none, styles.undercurl, cInfo)
-      Group.new('DiagnosticUnderlineHint', colors.none, colors.none, styles.undercurl, cHint)
-
-      Group.new('HoverBorder', colors.yellow, colors.none, styles.NONE)
-    end,
-    enabled = false,
-  },
 
   -- DEFAULT
   --
@@ -92,6 +46,14 @@ require('lazy').setup({
   {
     'eandrju/cellular-automaton.nvim',
     cmd = { 'CellularAutomaton' },
+  },
+  -- Pantran work strange, maybe API keys required
+  -- Check later deepl engine!
+  {
+    'potamides/pantran.nvim',
+    keys = {
+      { '<leader>tr', '<cmd>Pantran<cr>', desc = 'Translator' },
+    }
   },
   {
     'glepnir/flybuf.nvim',
@@ -137,7 +99,6 @@ require('lazy').setup({
   },
   {
     'mbbill/undotree',
-    -- cmd = { 'UndotreeToggle' },
     keys = {
       { '<leader>uu', '<cmd>UndotreeToggle<cr>', desc = 'Undo tree' },
     },
@@ -189,8 +150,14 @@ require('lazy').setup({
 
   -- TODO: event for git, gitsigns
   {
+    'tpope/vim-fugitive',
+    config = function()
+    end,
+  },
+  {
     'dinhhuy258/git.nvim',
     opts = {},
+    enabled = false,
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -319,7 +286,7 @@ require('lazy').setup({
   -- LSP
   --
   --
-  -- TODO: Remove lsp-zero
+  -- TODO: Remove lsp-zero?
   {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v2.x',
@@ -374,8 +341,9 @@ require('lazy').setup({
       { 'hrsh7th/cmp-nvim-lsp' },
 
       { 'williamboman/mason-lspconfig.nvim' },
+      -- Fidget removed because noice.nvim!
       -- { 'j-hui/fidget.nvim', tag = 'legacy' },
-      -- NOTE: Maybe remove neodev?
+      -- Maybe remove neodev?
       { 'folke/neodev.nvim' },
       { 'ray-x/lsp_signature.nvim' },
     },
@@ -389,7 +357,7 @@ require('lazy').setup({
           transparency = 88,
           hint_enable = false,
           handler_opts = {
-            border = 'single', -- double, rounded, single, shadow, none, or a table of borders
+            border = 'single',
           },
           toggle_key = '<M-x>',
         }, bufnr)
@@ -410,10 +378,12 @@ require('lazy').setup({
         nmap('<space>f', function()
           vim.lsp.buf.format({ async = true })
         end, 'Format')
+        --
+        --NOTE: I need this keymaps??
+        --
         -- nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         -- nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-        -- vim.keymap.set("i", "<M-x>", function() vim.lsp.buf.signature_help() end, { noremap=true, silent=true } )
         -- vim.keymap.set('i', '<M-x>', vim.lsp.buf.signature_help, { noremap = true, silent = true })
         -- nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
         nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -541,12 +511,8 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'luasnip' },
-          -- {name = 'buffer', keyword_length = 3},
-          -- {name = 'luasnip', keyword_length = 2},
         },
         mapping = {
-          -- ['<Tab>'] = cmp_action.luasnip_supertab(),
-          -- ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
           ['<Tab>'] = cmp_action.tab_complete(),
           ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
           ['<C-f>'] = cmp_action.luasnip_jump_forward(),
@@ -570,9 +536,11 @@ require('lazy').setup({
     dependencies = {
       'mason.nvim',
       'nvim-lua/plenary.nvim',
+      'davidmh/cspell.nvim',
     },
     config = function()
       local nls = require('null-ls')
+      -- local cspell = require('cspell')
       -- local util = require("null-ls.utils")
       -- local help = require("null-ls.helpers")
 
@@ -603,11 +571,23 @@ require('lazy').setup({
             diagnostic_.severity = vim.diagnostic.severity.INFO
           end,
         }),
-        -- formatting.shfmt.with({
-        --   extra_args = { "-ci", "-i", "2", "-s" },
-        -- }),
-        -- diagnostic.eslit_d,
+        diagnostic.flake8,
+        formatting.shfmt.with({
+          extra_args = { "-ci", "-i", "2", "-s" },
+        }),
+        -- diagnostic.eslint_d,
         -- completions.luasnip,
+        diagnostic.codespell,
+        --
+        -- CSPELL is too much...
+        --
+        -- cspell.diagnostics.with({
+        --   config = {
+        --     find_json = function(_)
+        --       return vim.fn.expand(vim.fn.stdpath('config') .. '/cspell.json')
+        --     end,
+        --   },
+        -- }),
       }
 
       nls.setup({
@@ -670,7 +650,7 @@ require('lazy').setup({
       },
       messages = {
         enabled = false,
-      }
+      },
       -- presets = {
       --   bottom_search = true,
       --   command_paletter = true,
@@ -756,7 +736,6 @@ require('lazy').setup({
       -- show_current_context_start = false,
       -- space_char_blankline = " ",
     },
-    -- enabled = false,
   },
   {
     'nvim-treesitter/nvim-treesitter',

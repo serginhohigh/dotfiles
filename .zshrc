@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Enable additional glob operators. (Globbing = pattern matching)
 # https://zsh.sourceforge.io/Doc/Release/Expansion.html#Filename-Generation
 setopt EXTENDED_GLOB
@@ -21,20 +28,12 @@ setopt NO_CLOBBER
 # Treat comments pasted into the command line as comments, not code.
 setopt INTERACTIVE_COMMENTS
 
-# Don't treat non-executable files in your $path as commands. This makes sure
-# they don't show up as command completions. Settinig this option can impact
-# performance on older systems, but should not be a problem on modern ones.
-setopt HASH_EXECUTABLES_ONLY
-
 # Enable ** and *** as shortcuts for **/* and ***/*, respectively.
 # https://zsh.sourceforge.io/Doc/Release/Expansion.html#Recursive-Globbing
 setopt GLOB_STAR_SHORT
 
 # Sort numbers numerically, not lexicographically.
 setopt NUMERIC_GLOBSORT
-
-autoload -Uz compinit && compinit
-autoload -U colors && colors
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -50,46 +49,132 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-zinit light Aloxaf/fzf-tab
-# zinit pack"no-dir-color-swap" for ls_colors
+# DEFAULTS
+
+zinit ice blockf atpull"zinit creinstall -q ."
 zinit light zsh-users/zsh-completions
-zinit load zdharma-continuum/history-search-multi-word
-zinit light zsh-users/zsh-autosuggestions
+
+autoload compinit
+compinit
+
+zinit load Aloxaf/fzf-tab
+
 zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zdharma-continuum/history-search-multi-word
+
+zinit light zsh-users/zsh-autosuggestions
+
+zinit ice from"gh-r" as"program" mv"nvim* -> nvim" pick"nvim/bin/nvim"
+zinit light neovim/neovim
+
+zinit ice from"gh-r" as"program" mv"gh* -> gh" pick"gh/bin/gh" \
+  atclone"gh/bin/gh completion --shell zsh > _gh" \
+  atpull"%atclone"
+zinit light cli/cli
+
+# PROMPT
+
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# LINTERS&FORMATTERS
+
+zinit ice from"gh-r" as"program" extract"" pick"stylua"
+zinit light JohnnyMorganz/StyLua
+
+zinit ice from"gh-r" as"program" mv"shfmt* -> shfmt" pick"shfmt"
+zinit light mvdan/sh
+
+zinit ice from"gh-r" as"program" mv"hadolint* -> hadolint" pick"hadolint"
+zinit light hadolint/hadolint
+
+# CLI TOOLS&OTHERS
+
 zinit light MichaelAquilina/zsh-you-should-use
-zinit light woefe/git-prompt.zsh
-# zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
 
-# set list-colors to enable filename colorizing
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zinit ice wait lucid id-as
+zinit load hlissner/zsh-autopair
 
-# PS1='%F{blue}%~ %(?.%F{green}.%F{red})%#%f $(gitprompt) '
-PS1='%F{blue}%~ $(gitprompt)%(?.%F{green}.%F{red})%#%f '
+zvm_config() {
+  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+  ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+  ZVM_VI_EDITOR=nvim
+}
+
+## Hack for zsh-autosuggestions bindings, because vi remove them
+zvm_after_init() {
+  bindkey "^ " autosuggest-execute
+  bindkey "^R" history-search-multi-word
+}
+zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
+
+zinit ice from"gh-r" as"program"
+zinit light nektos/act
+
+zinit ice from"gh-r" as"program"
+zinit light httpie/httpie
+
+zinit ice from"gh-r" as"program" mv"gruyere* -> gruyere"
+zinit light savannahostrowski/gruyere
+
+zinit ice from"gh-r" as"program" pick"zoxide" atload'eval "$(zoxide init zsh)"'
+zinit light ajeetdsouza/zoxide
+
+zinit ice from"gh-r" as"program" extract"" pick"difft"
+zinit light Wilfred/difftastic
+
+zinit ice from"gh-r" as"program" bpick"*linux*386*" mv"moar* -> moar"
+zinit light walles/moar
+
+zinit ice from"gh-r" as"program" mv"delta* -> delta" pick"delta/delta"
+zinit light dandavison/delta
+
+zinit from"gh-r" as"program" mv"direnv* -> direnv" \
+    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
+    pick"direnv" src="zhook.zsh" for \
+        direnv/direnv
+
+zinit ice from"gh-r" as"program" extract"" pick"fzf"
+zinit light junegunn/fzf
+
+zinit ice from"gh-r" as"program" mv"bat* -> bat" pick"bat/bat" \
+  atclone"cp -vf bat/autocomplete/bat.zsh bat/autocomplete/_bat" \
+  atpull"%atclone" atload"export MANPAGER='sh -c \"col -bx | bat -l man -p\"'"
+zinit light sharkdp/bat
+
+zinit ice from"gh-r" as"program" extract"" pick"bin/exa" \
+  atclone"cp -vf completions/exa.zsh completions/_exa" \
+  atpull"%atclone"
+zinit light ogham/exa
+
+zinit ice from"gh-r" as"program" mv"ripgrep* -> rg" pick"rg/rg"
+zinit light BurntSushi/ripgrep
+
+zinit ice from"gh-r" as"program" mv"fd* -> fd" pick"fd/fd"
+zinit light sharkdp/fd
 
 path+=(
-  $HOME/.bin
-  /snap/bin
-  $HOME/.cargo/bin
+  $HOME/.local/bin
 )
 
-bindkey '^ ' autosuggest-execute
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias grep="grep --color=auto"
+alias less="less -R"
+alias diff="difft --color always | moar"
+alias ls="exa --group-directories-first --icons --color-scale"
+alias lt="exa --tree --level=2 --icons"
+alias ll="ls -alF"
+alias gs="git status -sb"
+alias gl="git lg"
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias grep='grep --color=auto'
-alias less='less -R'
-alias ls='exa --group-directories-first --icons --color-scale'
-alias lt='exa --tree --level=2 --icons'
-alias l='ls -a'
-alias ld='l -D'
-alias ll='ls -alF'
-alias gs='git status -sb'
+export EDITOR="nvim"
+export VISUAL=$EDITOR
+export PAGER="moar"
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-# ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-# ZVM_VI_EDITOR=nvim
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

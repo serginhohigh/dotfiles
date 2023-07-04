@@ -11,15 +11,8 @@ Works and tested on Ubuntu 22.04
 ```
 sudo apt update && sudo apt install zsh \
     snapd cargo git aptitude \
-    zsh stow fzf exa bat \
-    sqlite3 unzip ripgrep fd-find
+    stow sqlite3 unzip curl 
 ```
-
-> ! Dont forget the symlobic link for bat - https://github.com/sharkdp/bat#on-ubuntu-using-apt
->
-> Download [hadolint](https://github.com/hadolint/hadolint), [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) from releases manually. Dont forget make them exutable!
->
-> Recommend create $HOME/.bin folder for executable utils as bat, hadolint, diff-so-fancy etc
 
 2. Install NodeJS, pyenv
 
@@ -39,7 +32,7 @@ git clone https://github.com/serginhohigh/dotfiles $HOME/.dotfiles
 4. Link dotfiles to ur home directory
 
 ```
-cd $HOME/.dotfiles && stow --ignore='\.md' .
+cd $HOME/.dotfiles && stow .
 ```
 
 5. Make zsh default. Restart terminal session after that
@@ -48,35 +41,25 @@ cd $HOME/.dotfiles && stow --ignore='\.md' .
 chsh -s $(which zsh)
 ```
 
-6. Install neovim via snap
-
-```
-snap install nvim --classic
-```
-
-> If you encounter problems, see the official instructions - https://github.com/neovim/neovim/wiki/Installing-Neovim
-
-7. Install the required version of python and assign it to the global
+6. Install the required version of python and assign it to the global
 
 ```
 pyenv install 3.11
 pyenv global 3.11
 ```
 
-8. Install neovim node/python dependencies, null-ls diagnostics/formatters etc
+7. Install neovim node/python dependencies, null-ls diagnostics/formatters etc
 
 ```
-# Python formatters, linters. Neovim python dependency
-pip install ruff black isort add-trailing-comma pynvim
+# Python formatters, linters. Neovim python dependency and codespell
+pip install ruff black isort add-trailing-comma pynvim codespell
 
-# JS, TS, Markdown etc formatter \w daemon. Neovim node dependency
-sudo npm install -g prettier @fsouza/prettierd neovim
-
-# Lua code formatter for neovim
-cargo install stylua
+# JS, TS, Markdown etc formatter \w daemon. Neovim node dependency and cspell
+sudo npm install -g prettier @fsouza/prettierd neovim cspell@latest \
+    @cspell/dict-ru_ru @cspell/dict-shell
 ```
 
-9. Change path to python intrpetator in neovim [config](https://github.com/serginhohigh/dotfiles/blob/6d58bc0523d791b348606053b488aa2241d2ad7a/.config/nvim/init.lua#L4)
+8. Change path to python intrpetator in neovim [config](https://github.com/serginhohigh/dotfiles/blob/6d58bc0523d791b348606053b488aa2241d2ad7a/.config/nvim/init.lua#L4)
 
 ## Windows
 
@@ -89,7 +72,7 @@ cargo install stylua
 
 1. Install scoop. Can read how install here https://github.com/ScoopInstaller/Scoop#installation
 
-2. Install win32yank for neovim copy/paste compability
+2. Install win32yank for neovim copy/paste compatibility
 
 ```
 scoop install win32yank
@@ -98,7 +81,9 @@ scoop install win32yank
 3. Download and install docker desktop with wsl engine.
    > Use custom installation. Why? Read this [issue](https://github.com/docker/for-win/issues/13318)
    >
-   > Dont forgot change ur disk letter!
+   > Don't forgot change ur disk letter!
+   >
+   > Also check this [issue](https://github.com/microsoft/WSL/issues/8725)
 
 ```
 Start-Process "Docker Desktop Installer.exe" -Verb RunAs -Wait -ArgumentList "install --installation-dir=E:\Docker\"

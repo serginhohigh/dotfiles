@@ -1,5 +1,3 @@
--- vim.opt.guicursor = ""
-
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -22,120 +20,38 @@ vim.opt.incsearch = true
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
-vim.opt.isfname:append("@-@")
+vim.opt.signcolumn = 'yes'
+vim.opt.isfname:append('@-@')
 
 vim.opt.updatetime = 50
 vim.opt.autoindent = true
 
--- local opt = vim.opt
---
--- opt.breakindent = true
--- opt.belloff = 'all'
--- vim.opt.autoindent = true
--- -- opt.clipboard = 'unnamedplus'
--- opt.confirm = true
--- opt.completeopt = 'menu,menuone,noselect'
--- opt.cursorline = true
--- opt.expandtab = true
--- opt.grepformat = '%f:%l:%c:%m'
--- opt.grepprg = 'rg --vimgrep'
--- opt.hidden = true
--- opt.ignorecase = true
--- opt.incsearch = true
--- opt.joinspaces = true
--- opt.list = true
--- opt.modelines = 5
--- opt.mouse = 'a'
--- opt.number = true
--- opt.relativenumber = true
--- opt.scrolloff = 3
--- opt.sessionoptions = { 'buffers', 'curdir', 'tabpages', 'winsize' }
--- opt.shiftround = true
--- opt.shiftwidth = 2
--- opt.showcmd = false
--- opt.showmode = false
--- opt.sidescrolloff = 8
--- opt.signcolumn = 'number'
--- opt.smartcase = true
--- opt.smarttab = true
--- opt.softtabstop = -1
--- opt.spellcapcheck = ''
--- opt.splitbelow = true
--- opt.splitright = true
--- opt.switchbuf = 'usetab'
--- opt.tabstop = 2
--- opt.termguicolors = true
--- opt.timeoutlen = 300
--- opt.title = false
--- opt.virtualedit = 'block'
--- opt.visualbell = false
--- opt.wildmenu = true
--- opt.undofile = true
--- opt.undolevels = 10000
---
--- opt.breakindentopt = {
---   shift = 2,
--- }
---
--- -- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
--- -- stylua: ignore
--- opt.fillchars = {
---   fold      = '·',
---   horiz     = '━',
---   horizdown = '┳',
---   horizup   = '┻',
---   vert      = '┃',
---   vertleft  = '┫',
---   vertright = '┣',
---   verthoriz = '╋',
--- }
---
--- opt.formatoptions = opt.formatoptions
---   - 'a'
---   - 't'
---   + 'c'
---   + 'q'
---   + 'l'
---   + 'j'
---   + 'r'
---   - 'o'
---   + 'n'
---   - '2'
---
--- opt.listchars = opt.listchars
---   + 'nbsp:⦸'
---   + 'tab:▷┅'
---   + 'extends:»'
---   + 'precedes:«'
---   + 'trail:•'
---
--- opt.shortmess = opt.shortmess
---   + 'A'
---   + 'I'
---   + 'O'
---   + 'T'
---   + 'W'
---   + 'a'
---   + 'o'
---   + 't'
---   + 'c'
---
--- opt.whichwrap = opt.whichwrap
---   + 'b'
---   + 's'
---   + 'h'
---   + 'l'
---   + '<'
---   + '>'
---   + '['
---   + ']'
---
--- opt.wildmode = {
---   'longest',
---   'list',
---   'full',
--- }
+-- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
+-- stylua: ignore
+vim.opt.fillchars = {
+  fold      = '·',
+  horiz     = '━',
+  horizdown = '┳',
+  horizup   = '┻',
+  vert      = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+}
+
+vim.opt.formatoptions = vim.opt.formatoptions - 'a' - 't' + 'c' + 'q' + 'l' + 'j' + 'r' - 'o' + 'n' - '2'
+
+vim.opt.listchars = vim.opt.listchars + 'nbsp:⦸' + 'tab:▷┅' + 'extends:»' + 'precedes:«' + 'trail:•'
+
+vim.opt.shortmess = vim.opt.shortmess + 'A' + 'I' + 'O' + 'T' + 'W' + 'a' + 'o' + 't' + 'c'
+
+vim.opt.whichwrap = vim.opt.whichwrap + 'b' + 's' + 'h' + 'l' + '<' + '>' + '[' + ']'
+
+vim.opt.wildmode = {
+  'longest',
+  'list',
+  'full',
+}
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -147,6 +63,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- https://github.com/neovim/neovim/issues/4867#issuecomment-291249173
+vim.cmd('au VimLeave,VimSuspend * set guicursor=a:block-blinkon0')
+-- vim.api.nvim_create_autocmd({ 'VimLeave', 'VimSuspend' }, {
+--   pattern = '*',
+--   command = 'set guicursor=a:block-blinkon0',
+-- })
 
 -- vim.api.nvim_create_autocmd(
 --   'BufReadPost',

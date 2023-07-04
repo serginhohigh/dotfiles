@@ -8,21 +8,26 @@
 - neovim with alots plugins
 - .gitconfig
 - .ssh/config
+- powerlevel10k prompt config
 
 ## Requirements
 
 - zsh
-- neovim
 - NodeJS (npm for neovim treesitter etc)
 - pyenv
-- [so-fancy/diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - Pretty git diffs
-- [gh](https://github.com/cli/cli) - Github cli
+- git
+- some linux cli tools
+  - curl
+  - stow
 
 ## What else do I use
 
 - [hadolint/hadolint](https://github.com/hadolint/hadolint) - Dockerfile linter
-- New generation cli utils eg [junegunn/fzf](https://github.com/junegunn/fzf), [sharkdp/bat](https://github.com/sharkdp/bat) etc (check [INSTALL.md](./INSTALL.md#how-to))
+- New generation cli utils eg [junegunn/fzf](https://github.com/junegunn/fzf), [sharkdp/bat](https://github.com/sharkdp/bat) etc (check [.zshrc](./.zshrc))
+- ...
 
 ## How to
 
-Check [INSTALL.md](./INSTALL.md) but that's more for me
+Just clone this repo to home folder, cd and execute `stow .`
+
+For additional info about NodeJS and pyenv check [INSTALL.md](./INSTALL.md)
