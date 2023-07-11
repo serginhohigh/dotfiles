@@ -26,6 +26,8 @@ vim.opt.isfname:append('@-@')
 vim.opt.updatetime = 50
 vim.opt.autoindent = true
 
+vim.opt.list = true
+
 -- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
 -- stylua: ignore
 vim.opt.fillchars = {
@@ -64,14 +66,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
--- https://github.com/neovim/neovim/issues/4867#issuecomment-291249173
-vim.cmd('au VimLeave,VimSuspend * set guicursor=a:block-blinkon0')
--- vim.api.nvim_create_autocmd({ 'VimLeave', 'VimSuspend' }, {
---   pattern = '*',
---   command = 'set guicursor=a:block-blinkon0',
--- })
+-- https://github.com/microsoft/terminal/issues/13420
+vim.cmd(':au VimLeave * set guicursor= | call chansend(v:stderr, "\x1b[ q")')
 
--- vim.api.nvim_create_autocmd(
---   'BufReadPost',
---   { command = [[setlocal spell spelllang=en_us,ru]] }
--- )
+vim.api.nvim_create_autocmd(
+  'BufReadPost',
+  { command = [[setlocal spell spelllang=en_us,ru]] }
+)
