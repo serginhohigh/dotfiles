@@ -19,9 +19,6 @@ setopt HIST_FCNTL_LOCK
 # Keep only the most recent copy of each duplicate entry in history.
 setopt HIST_IGNORE_ALL_DUPS
 
-# Auto-sync history between concurrent sessions.
-setopt SHARE_HISTORY
-
 # Don't let > silently overwrite files. To overwrite, use >! instead.
 setopt NO_CLOBBER
 
@@ -94,18 +91,7 @@ zinit light MichaelAquilina/zsh-you-should-use
 zinit ice wait lucid id-as
 zinit load hlissner/zsh-autopair
 
-zvm_config() {
-  ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-  ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-  ZVM_VI_EDITOR=nvim
-}
-
-## Hack for zsh-autosuggestions bindings, because vi remove them
-zvm_after_init() {
-  bindkey "^ " autosuggest-execute
-  bindkey "^R" history-search-multi-word
-}
-zinit ice depth=1; zinit light jeffreytse/zsh-vi-mode
+zinit snippet OMZP::extract
 
 zinit ice from"gh-r" as"program"
 zinit light nektos/act
@@ -152,6 +138,9 @@ zinit light BurntSushi/ripgrep
 zinit ice from"gh-r" as"program" mv"fd* -> fd" pick"fd/fd"
 zinit light sharkdp/fd
 
+# COMPLETIONS
+zinit snippet OMZP::docker/completions/_docker
+
 path+=(
   $HOME/.local/bin
 )
@@ -170,7 +159,6 @@ alias gl="git lg"
 
 export EDITOR="nvim"
 export VISUAL=$EDITOR
-export PAGER="moar"
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
