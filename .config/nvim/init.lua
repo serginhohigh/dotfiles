@@ -53,7 +53,7 @@ require('lazy').setup({
     'potamides/pantran.nvim',
     keys = {
       { '<leader>tr', '<cmd>Pantran<cr>', desc = 'Translator' },
-    }
+    },
   },
   {
     'glepnir/flybuf.nvim',
@@ -151,8 +151,7 @@ require('lazy').setup({
   -- TODO: event for git, gitsigns
   {
     'tpope/vim-fugitive',
-    config = function()
-    end,
+    config = function() end,
   },
   {
     'dinhhuy258/git.nvim',
@@ -176,7 +175,7 @@ require('lazy').setup({
         desc = '',
       },
       {
-        '<C-e>',
+        '<C-m>',
         function()
           require('harpoon.ui').toggle_quick_menu()
         end,
@@ -301,7 +300,10 @@ require('lazy').setup({
     config = function()
       require('lspsaga').setup({
         lightbulb = {
-          enable = true,
+          enable = false,
+        },
+        symbol_in_winbar = {
+          enable = false,
         },
       })
       vim.keymap.set('n', 'gp', '<cmd>Lspsaga peek_definition<CR>')
@@ -513,8 +515,8 @@ require('lazy').setup({
           { name = 'luasnip' },
         },
         mapping = {
-          ['<Tab>'] = cmp_action.tab_complete(),
-          ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+          -- ['<Tab>'] = cmp_action.tab_complete(),
+          -- ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
           ['<C-f>'] = cmp_action.luasnip_jump_forward(),
           ['<C-b>'] = cmp_action.luasnip_jump_backward(),
 
@@ -571,9 +573,13 @@ require('lazy').setup({
             diagnostic_.severity = vim.diagnostic.severity.INFO
           end,
         }),
-        diagnostic.flake8,
+        -- diagnostic.flake8.with({
+        --   diagnostics_postprocess = function(diagnostic_)
+        --     diagnostic_.severity = vim.diagnostic.severity.INFO
+        --   end,
+        -- }),
         formatting.shfmt.with({
-          extra_args = { "-ci", "-i", "2", "-s" },
+          extra_args = { '-ci', '-i', '2', '-s' },
         }),
         -- diagnostic.eslint_d,
         -- completions.luasnip,
@@ -613,6 +619,7 @@ require('lazy').setup({
         },
       },
     },
+    enabled = false,
   },
   {
     'stevearc/dressing.nvim',
