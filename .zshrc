@@ -69,6 +69,10 @@ zinit ice from"gh-r" as"program" mv"gh* -> gh" pick"gh/bin/gh" \
   atpull"%atclone"
 zinit light cli/cli
 
+zinit ice as"program" pick"$ZPFX/bin/git-*" \
+  src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX"
+zinit light tj/git-extras
+
 # PROMPT
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
