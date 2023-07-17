@@ -81,6 +81,9 @@ zinit light JohnnyMorganz/StyLua
 zinit ice from"gh-r" as"program" mv"shfmt* -> shfmt" pick"shfmt"
 zinit light mvdan/sh
 
+zinit ice from"gh-r" as"program" mv"shellcheck* -> shellcheck" pick"shellcheck/shellcheck"
+zinit light koalaman/shellcheck
+
 zinit ice from"gh-r" as"program" mv"hadolint* -> hadolint" pick"hadolint"
 zinit light hadolint/hadolint
 

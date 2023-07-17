@@ -581,6 +581,7 @@ require('lazy').setup({
         formatting.shfmt.with({
           extra_args = { '-ci', '-i', '2', '-s' },
         }),
+        diagnostic.shellcheck,
         -- diagnostic.eslint_d,
         -- completions.luasnip,
         diagnostic.codespell,
