@@ -11,7 +11,7 @@ Works and tested on Ubuntu 22.04
 ```
 sudo apt update && sudo apt install zsh \
     snapd cargo git aptitude \
-    stow sqlite3 unzip curl 
+    stow sqlite3 unzip curl
 ```
 
 2. Install NodeJS, pyenv
@@ -52,7 +52,7 @@ pyenv global 3.11
 
 ```
 # Python formatters, linters. Neovim python dependency and codespell
-pip install ruff black isort add-trailing-comma pynvim codespell
+pip install ruff black isort add-trailing-comma pynvim codespell debugpy
 
 # JS, TS, Markdown etc formatter \w daemon. Neovim node dependency and cspell
 sudo npm install -g prettier @fsouza/prettierd neovim cspell@latest \
@@ -88,3 +88,5 @@ scoop install win32yank
 ```
 Start-Process "Docker Desktop Installer.exe" -Verb RunAs -Wait -ArgumentList "install --installation-dir=E:\Docker\"
 ```
+
+4. Windows Terminal - [Bug with Visual mode blockwise](https://github.com/microsoft/terminal/issues/5790)

@@ -1,5 +1,5 @@
-vim.opt.nu = true
-vim.opt.relativenumber = true
+vim.opt.number = true
+vim.opt.relativenumber = false
 
 vim.opt.expandtab = true
 vim.opt.softtabstop = -1
@@ -8,7 +8,7 @@ vim.opt.shiftwidth = 2
 
 vim.opt.smartindent = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -28,6 +28,10 @@ vim.opt.autoindent = true
 
 vim.opt.list = true
 
+vim.opt.colorcolumn = '88'
+vim.opt.linebreak = true
+vim.opt.showbreak = "↳ "
+
 -- https://www.compart.com/en/unicode/U+XXXX (unicode character code)
 -- stylua: ignore
 vim.opt.fillchars = {
@@ -41,7 +45,7 @@ vim.opt.fillchars = {
   verthoriz = '╋',
 }
 
-vim.opt.formatoptions = vim.opt.formatoptions - 'a' - 't' + 'c' + 'q' + 'l' + 'j' + 'r' - 'o' + 'n' - '2'
+vim.opt.formatoptions = vim.opt.formatoptions - 'a' - 't' + 'c' + 'q' - 'l' + 'j' + 'r' - 'o' + 'n' - '2'
 
 vim.opt.listchars = vim.opt.listchars + 'nbsp:⦸' + 'tab:▷┅' + 'extends:»' + 'precedes:«' + 'trail:•'
 
@@ -54,6 +58,13 @@ vim.opt.wildmode = {
   'list',
   'full',
 }
+
+vim.cmd([[
+  augroup Yank
+  autocmd!
+  autocmd TextYankPost * :call system('/mnt/c/windows/system32/clip.exe ',@")
+  augroup END
+]])
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`

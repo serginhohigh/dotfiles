@@ -44,6 +44,10 @@ require('lazy').setup({
   --
 
   {
+    'ThePrimeagen/vim-be-good',
+    cmd = 'VimBeGood',
+  },
+  {
     'eandrju/cellular-automaton.nvim',
     cmd = { 'CellularAutomaton' },
   },
@@ -139,7 +143,7 @@ require('lazy').setup({
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-    ft = { 'markdown', 'vimwiki' },
+    -- ft = { 'markdown', 'vimwiki', 'plantuml' },
     cmd = { 'MarkdownPreview', 'MarkdownPreviewToggle' },
   },
   {
@@ -149,15 +153,15 @@ require('lazy').setup({
   },
 
   -- TODO: event for git, gitsigns
-  {
-    'tpope/vim-fugitive',
-    config = function() end,
-  },
-  {
-    'dinhhuy258/git.nvim',
-    opts = {},
-    enabled = false,
-  },
+  -- {
+  --   'tpope/vim-fugitive',
+  --   config = function() end,
+  -- },
+  -- {
+  --   'dinhhuy258/git.nvim',
+  --   opts = {},
+  --   enabled = false,
+  -- },
   {
     'lewis6991/gitsigns.nvim',
     opts = {},
@@ -175,61 +179,61 @@ require('lazy').setup({
         desc = '',
       },
       {
-        '<C-m>',
+        '<leader><leader>',
         function()
           require('harpoon.ui').toggle_quick_menu()
         end,
         mode = 'n',
         desc = '',
       },
-      {
-        '<C-h>',
-        function()
-          require('harpoon.ui').nav_file(1)
-        end,
-        mode = 'n',
-        desc = '',
-      },
-      {
-        '<C-t>',
-        function()
-          require('harpoon.ui').nav_file(2)
-        end,
-        mode = 'n',
-        desc = '',
-      },
-      {
-        '<C-n>',
-        function()
-          require('harpoon.ui').nav_file(3)
-        end,
-        mode = 'n',
-        desc = '',
-      },
-      {
-        '<C-s>',
-        function()
-          require('harpoon.ui').nav_file(4)
-        end,
-        mode = 'n',
-        desc = '',
-      },
-      {
-        '<Tab>',
-        function()
-          require('harpoon.ui').nav_next()
-        end,
-        mode = 'n',
-        desc = '',
-      },
-      {
-        '<S-Tab>',
-        function()
-          require('harpoon.ui').nav_prev()
-        end,
-        mode = 'n',
-        desc = '',
-      },
+      -- {
+      --   '<C-h>',
+      --   function()
+      --     require('harpoon.ui').nav_file(1)
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
+      -- {
+      --   '<C-t>',
+      --   function()
+      --     require('harpoon.ui').nav_file(2)
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
+      -- {
+      --   '<C-n>',
+      --   function()
+      --     require('harpoon.ui').nav_file(3)
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
+      -- {
+      --   '<C-s>',
+      --   function()
+      --     require('harpoon.ui').nav_file(4)
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
+      -- {
+      --   '<Tab>',
+      --   function()
+      --     require('harpoon.ui').nav_next()
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
+      -- {
+      --   '<S-Tab>',
+      --   function()
+      --     require('harpoon.ui').nav_prev()
+      --   end,
+      --   mode = 'n',
+      --   desc = '',
+      -- },
     },
   },
   {
@@ -258,7 +262,8 @@ require('lazy').setup({
       {
         '<leader>tg',
         function()
-          require('telescope.builtin').grep_string({ search = vim.fn.input('Grep > ') })
+          -- require('telescope.builtin').grep_string({ search = vim.fn.input('Grep > ') })
+          require('telescope.builtin').live_grep()
         end,
         mode = 'n',
         desc = '',
@@ -280,6 +285,84 @@ require('lazy').setup({
         desc = '',
       },
     },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    event = 'VeryLazy',
+    dependencies = {
+      -- Creates a beautiful debugger UI
+      'rcarriga/nvim-dap-ui',
+
+      -- Installs the debug adapters for you
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+
+      -- Add your own debuggers here
+      'mfussenegger/nvim-dap-python',
+    },
+    config = function()
+      local dap = require('dap')
+      local dapui = require('dapui')
+
+      require('mason-nvim-dap').setup({
+        -- Makes a best effort to setup the various debuggers with
+        -- reasonable debug configurations
+        automatic_setup = true,
+
+        -- You can provide additional configuration to the handlers,
+        -- see mason-nvim-dap README for more information
+        handlers = {},
+
+        -- You'll need to check that you have the required things installed
+        -- online, please don't ask me how to install them :)
+        ensure_installed = {
+          -- Update this to ensure that you have the debuggers for the langs you want
+          'python',
+        },
+      })
+
+      -- Basic debugging keymaps, feel free to change to your liking!
+      vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
+      vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
+      vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
+      vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
+      vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+      vim.keymap.set('n', '<leader>B', function()
+        dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+      end, { desc = 'Debug: Set Breakpoint' })
+
+      -- Dap UI setup
+      -- For more information, see |:help nvim-dap-ui|
+      dapui.setup({
+        -- Set icons to characters that are more likely to work in every terminal.
+        --    Feel free to remove or use ones that you like more! :)
+        --    Don't feel like these are good choices.
+        icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+        controls = {
+          icons = {
+            pause = '⏸',
+            play = '▶',
+            step_into = '⏎',
+            step_over = '⏭',
+            step_out = '⏮',
+            step_back = 'b',
+            run_last = '▶▶',
+            terminate = '⏹',
+            disconnect = '⏏',
+          },
+        },
+      })
+
+      -- Toggle to see last session result. Without this,
+      -- you can't see session output in case of unhandled exception.
+      vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
+
+      dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+      dap.listeners.before.event_terminated['dapui_config'] = dapui.close
+      dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+      require('dap-python').setup()
+    end,
   },
 
   -- LSP
@@ -364,10 +447,11 @@ require('lazy').setup({
           toggle_key = '<M-x>',
         }, bufnr)
 
-        lsp.default_keymaps({
-          buffer = bufnr,
-          omit = { 'F2', 'F3', 'F4', 'K', 'gl', 'gd', 'gD', 'gi', 'go', 'gr', 'gs' },
-        })
+        -- WARN: omit not working
+        -- lsp.default_keymaps({
+        --   buffer = bufnr,
+        --   omit = { 'F2', 'F3', 'F4', 'K', 'gl', 'gd', 'gD', 'gi', 'go', 'gr', 'gs' },
+        -- })
 
         local nmap = function(keys, func, desc)
           if desc then
@@ -382,6 +466,7 @@ require('lazy').setup({
         end, 'Format')
         --
         --NOTE: I need this keymaps??
+        -- Builtin signature work strange
         --
         -- nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         -- nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
@@ -458,10 +543,6 @@ require('lazy').setup({
       require('luasnip.loaders.from_vscode').lazy_load()
       cmp.setup({
         formatting = {
-          --   format = function(_, vim_item)
-          --     vim_item.kind = (cmp_kinds[vim_item.kind] or '') .. vim_item.kind
-          --     return vim_item
-          --   end,
           format = lspkind.cmp_format({
             mode = 'symbol_text',
             menu = {
@@ -515,8 +596,6 @@ require('lazy').setup({
           { name = 'luasnip' },
         },
         mapping = {
-          -- ['<Tab>'] = cmp_action.tab_complete(),
-          -- ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
           ['<C-f>'] = cmp_action.luasnip_jump_forward(),
           ['<C-b>'] = cmp_action.luasnip_jump_backward(),
 
@@ -565,7 +644,7 @@ require('lazy').setup({
             'ForceSingle',
           },
         }),
-        formatting.black,
+        -- formatting.black,
         formatting.isort,
         formatting.ruff,
         diagnostic.ruff.with({
@@ -620,7 +699,7 @@ require('lazy').setup({
         },
       },
     },
-    enabled = false,
+    -- enabled = false,
   },
   {
     'stevearc/dressing.nvim',

@@ -23,11 +23,18 @@
 ## What else do I use
 
 - [hadolint/hadolint](https://github.com/hadolint/hadolint) - Dockerfile linter
-- New generation cli utils eg [junegunn/fzf](https://github.com/junegunn/fzf), [sharkdp/bat](https://github.com/sharkdp/bat) etc (check [.zshrc](./.zshrc))
-- ...
+- New generation cli utils eg [junegunn/fzf](https://github.com/junegunn/fzf), [sharkdp/bat](https://github.com/sharkdp/bat) etc 
+- check [.zshrc](./.zshrc) to see the full list of plugins in use
 
 ## How to
 
 Just clone this repo to home folder, cd and execute `stow .`
 
 For additional info about NodeJS and pyenv check [INSTALL.md](./INSTALL.md)
+
+## TODO
+
+- [ ] zinit async
+- [ ] split neovim plugins to different files
+- [ ] add some image examples
+- [ ] replace null-ls with https://github.com/mhartington/formatter.nvim and https://github.com/mfussenegger/nvim-lint (check also glepnir guard)

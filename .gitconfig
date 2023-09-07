@@ -12,6 +12,7 @@
 
 [merge]
   conflictstyle = diff3
+  tool = nvimdiff
 
 [delta]
   line-numbers = true

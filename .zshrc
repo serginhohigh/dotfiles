@@ -54,6 +54,8 @@ zinit light zsh-users/zsh-completions
 autoload compinit
 compinit
 
+zinit ice atclone"source fzf-tab.zsh && build-fzf-tab-module" \
+  atpull"%atclone"
 zinit load Aloxaf/fzf-tab
 
 zinit light zdharma-continuum/fast-syntax-highlighting
@@ -72,6 +74,10 @@ zinit light cli/cli
 zinit ice as"program" pick"$ZPFX/bin/git-*" \
   src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX"
 zinit light tj/git-extras
+
+zinit ice as"program" \
+  pick"git-quick-stats"
+zinit light arzzen/git-quick-stats
 
 # PROMPT
 
@@ -148,16 +154,37 @@ zinit light sharkdp/fd
 # COMPLETIONS
 zinit snippet OMZP::docker/completions/_docker
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
+ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste accept-line)
+
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# # set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# # switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
+
 path+=(
   $HOME/.local/bin
 )
+
+function difft_with_moar {
+    difft --color always "$@" | moar
+}
 
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias grep="grep --color=auto"
 alias less="less -R"
-alias diff="difft --color always | moar"
+alias diff=difft_with_moar
 alias ls="exa --group-directories-first --icons --color-scale"
 alias lt="exa --tree --level=2 --icons"
 alias ll="ls -alF"
